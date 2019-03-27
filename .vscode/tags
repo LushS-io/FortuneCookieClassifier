@@ -1,0 +1,22 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+FortuneCookieClassifier.py	../FortuneCookieClassifier.py	1;"	kind:file	line:1
+cwd	../FortuneCookieClassifier.py	/^cwd = os.getcwd()$/;"	kind:variable	line:8
+df	../FortuneCookieClassifier.py	/^df = df.apply($/;"	kind:variable	line:49
+df	../FortuneCookieClassifier.py	/^df = x$/;"	kind:variable	line:40
+np	../FortuneCookieClassifier.py	/^import numpy as np$/;"	kind:namespace	line:3
+os	../FortuneCookieClassifier.py	/^import os$/;"	kind:namespace	line:5
+pd	../FortuneCookieClassifier.py	/^import pandas as pd$/;"	kind:namespace	line:2
+sk	../FortuneCookieClassifier.py	/^import sklearn as sk$/;"	kind:namespace	line:4
+splitTrain	../FortuneCookieClassifier.py	/^splitTrain = traindata['traindata'].str.split()$/;"	kind:variable	line:37
+stop	../FortuneCookieClassifier.py	/^stop = stopwords$/;"	kind:variable	line:41
+stopwords	../FortuneCookieClassifier.py	/^stopwords = pd.read_csv(filepath_or_buffer=".\/fortunecookiedata\/stoplist.txt",header=None)$/;"	kind:variable	line:12
+testdata	../FortuneCookieClassifier.py	/^testdata = pd.read_csv(filepath_or_buffer='.\/fortunecookiedata\/testdata.txt',header=None)$/;"	kind:variable	line:14
+testlabels	../FortuneCookieClassifier.py	/^testlabels = pd.read_csv(filepath_or_buffer='.\/fortunecookiedata\/testlabels.txt',header=None)$/;"	kind:variable	line:15
+traindata	../FortuneCookieClassifier.py	/^traindata = pd.read_csv(filepath_or_buffer=".\/fortunecookiedata\/traindata.txt",header=None)$/;"	kind:variable	line:9
+trainlabels	../FortuneCookieClassifier.py	/^trainlabels = pd.read_csv(filepath_or_buffer='.\/fortunecookiedata\/trainlabels.txt')$/;"	kind:variable	line:10
+x	../FortuneCookieClassifier.py	/^x = traindata['traindata'].str.split()$/;"	kind:variable	line:22
