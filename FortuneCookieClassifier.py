@@ -33,6 +33,28 @@ traindata_token = x.to_dict()
 s = stopwords['stopwords']
 s = s.to_list()
 print(s)
+
+#%%
+print(traindata_token[1])
+
+youla = []
+
+for w in traindata_token[1]:
+    if w not in s:
+        youla.append(w)
+
+print(youla)
+
+#%% test
+# if list of returned filtered list does not contain any words in stopwords list, return "we are good", else fix!! 
+
+if "big" in s:
+    print('yes')
+
+else:
+    print('no')
+
+
 #%% -----------Remove stop words ------------
 words = []
 
@@ -49,7 +71,7 @@ print(filtered_sentence)
 
 
 
-{#%% --------------
+#%% --------------
 stopwords.head()
 
 trainlabels.head()
