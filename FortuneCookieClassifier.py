@@ -25,77 +25,14 @@ testlabels = pd.read_csv(filepath_or_buffer='./fortunecookiedata/testlabels.txt'
 traindata.head()
 # %% --------------Tokenize traindata-----------
 x = traindata['traindata'].str.split()
-print(x)
-x12 = x.str.split()
-# print(x12)
 # traindata_token = word_tokenize(x)
-traindata_token = x.to_dict()
-
+# traindata_token = x.to_dict()
+traindata_token = x.to_frame()
+print(type(traindata_token))
+print(traindata_token)
 #%% ----------- Tokenize stop words ------------
 s = stopwords['stopwords']
 s = s.to_list()
 print(s)
-
-#%%
-print(x[1])
-
-youla = []
-
-for w in x[1]:
-    if w not in s:
-        youla.append(w)
-print()
-print(youla)
-
-#%% test
-# if list of returned filtered list does not contain any words in stopwords list, return "we are good", else fix!! 
-
-if "big" in s:
-    print('yes')
-
-else:
-    print('no')
-
-
 #%% -----------Remove stop words ------------
-words = []
-
-filtered_sentence = [w for w in traindata_token if not w in s] 
-
-for w in traindata_token: 
-    if w not in s: 
-        filtered_sentence.append(w) 
-
-print(traindata_token)
-print(filtered_sentence) 
-
-
-
-
-
-#%% --------------
-stopwords.head()
-
-trainlabels.head()
-
-traindata.head()
-
-testlabels.head()
-#%%
-traindata.head()
-#%%
-df = x
-stop = stopwords
-
-for entry in stop.stopwords:
-    print(entry)
-
-#%%
-
-# z = lambda x: 
-df = df.apply(
-    lambda x: [item for item in x if item not in stop])
-
-#%%
-
-#%%
+traindata_token['traindata'].apply(lambda x: [item for item in x if item not in s])
