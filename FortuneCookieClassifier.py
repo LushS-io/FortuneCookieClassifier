@@ -44,4 +44,32 @@ the_vocab.columns = ['vocab']
 sorted_vocab = the_vocab['vocab'].apply(sorted)
 print(sorted_vocab)
 
+#%% ------------Feature extraction --------------
+test = sorted_vocab[1]
+print(test)
 #%%
+vocab_vectorized = CountVectorizer()
+vocab_vectorized.fit(test)
+print(vocab_vectorized.vocabulary_)
+
+vector = v.transform(test)
+# summarize encoded vector
+print(vector.shape)
+print(type(vector))
+print(vector.toarray())
+
+
+#%% --------- play from web ------------
+# list of text documents
+text = ["The quick brown fox jumped over the lazy dog."]
+v = CountVectorizer()
+v.fit(text)
+print(v.vocabulary_)
+
+vector = v.transform(text)
+# summarize encoded vector
+print(vector.shape)
+print(type(vector))
+print(vector.toarray())
+#%%
+
