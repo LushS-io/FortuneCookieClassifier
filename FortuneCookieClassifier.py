@@ -26,6 +26,8 @@ traindata.head()
 # %% --------------Tokenize traindata-----------
 x = traindata['traindata'].str.split()
 print(x)
+x12 = x.str.split()
+# print(x12)
 # traindata_token = word_tokenize(x)
 traindata_token = x.to_dict()
 
@@ -35,14 +37,14 @@ s = s.to_list()
 print(s)
 
 #%%
-print(traindata_token[1])
+print(x[1])
 
 youla = []
 
-for w in traindata_token[1]:
+for w in x[1]:
     if w not in s:
         youla.append(w)
-
+print()
 print(youla)
 
 #%% test
