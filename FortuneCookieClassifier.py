@@ -45,14 +45,14 @@ sorted_vocab = the_vocab['vocab'].apply(sorted)
 print(sorted_vocab)
 
 #%% ------------Feature extraction --------------
-test = sorted_vocab[1]
+test = sorted_vocab[21]
 print(test)
 #%%
 vocab_vectorized = CountVectorizer()
 vocab_vectorized.fit(test)
 print(vocab_vectorized.vocabulary_)
 
-vector = v.transform(test)
+vector = vocab_vectorized.transform(test)
 # summarize encoded vector
 print(vector.shape)
 print(type(vector))
