@@ -36,3 +36,4 @@ s = s.to_list()
 print(s)
 #%% -----------Remove stop words ------------
 traindata_token['traindata'].apply(lambda x: [item for item in x if item not in s])
+#%% ----------Sort each row in alphabetial order -----------
