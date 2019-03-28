@@ -35,5 +35,13 @@ s = stopwords['stopwords']
 s = s.to_list()
 print(s)
 #%% -----------Remove stop words ------------
-traindata_token['traindata'].apply(lambda x: [item for item in x if item not in s])
+the_vocab = traindata_token['traindata'].apply(lambda x: [item for item in x if item not in s])
+the_vocab = the_vocab.to_frame()
+print(the_vocab)
 #%% ----------Sort each row in alphabetial order -----------
+the_vocab.columns = ['vocab']
+
+sorted_vocab = the_vocab['vocab'].apply(sorted)
+print(sorted_vocab)
+
+#%%
