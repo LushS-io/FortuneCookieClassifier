@@ -20,22 +20,36 @@ testlabels = pd.read_csv(filepath_or_buffer='./fortunecookiedata/testlabels.txt'
 
 
 '''Create a dictionary of words in the training data. Utilize the stopwords list to remove insignificant words.'''
-# %% pre-processing
+# %% ----------- pre-processing -----------
 # traindata.columns = ['traindata']
 traindata.head()
-'''Tokenize traindata'''
+# %% --------------Tokenize traindata-----------
 x = traindata['traindata'].str.split()
-# print(x)
-a = x.to_dict()
-print(type(a))
-print(a[1])
+print(x)
+# traindata_token = word_tokenize(x)
+traindata_token = x.to_dict()
 
-#%%
-# '''Tokenize stop words'''
+#%% ----------- Tokenize stop words ------------
 s = stopwords['stopwords']
 s = s.to_list()
 print(s)
-#%%
+#%% -----------Remove stop words ------------
+words = []
+
+filtered_sentence = [w for w in traindata_token if not w in s] 
+
+for w in traindata_token: 
+    if w not in s: 
+        filtered_sentence.append(w) 
+
+print(traindata_token)
+print(filtered_sentence) 
+
+
+
+
+
+{#%% --------------
 stopwords.head()
 
 trainlabels.head()
