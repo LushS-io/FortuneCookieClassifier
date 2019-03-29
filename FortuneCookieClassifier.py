@@ -1,4 +1,5 @@
 # %%
+import collections
 import pandas as pd
 import numpy as np
 import os
@@ -7,6 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 import nltk
 from nltk.tokenize import word_tokenize
+import collections
 
 # %% import datasets
 # cwd = os.getcwd()
@@ -41,12 +43,21 @@ print(the_vocab)
 #%% ----------Sort each row in alphabetial order -----------
 the_vocab.columns = ['vocab']
 
-sorted_vocab = the_vocab['vocab'].apply(sorted)
+sorted_vocab = the_vocab['vocab'].apply(sorted).to_frame()
 print(sorted_vocab)
 
 #%% ------------Feature extraction --------------
-test = sorted_vocab[21]
-print(test)
+vocab = []
+sorted_vocab['vocab'].apply(lambda x: [vocab.append(word) for word in x if word not in vocab])
+
+#%% -----------Sort vocab -----------------
+vocab = sorted(vocab)
+print(vocab)
+
+#%% -------------- check for duplicates ------------
+a = vocab 
+print([item for item, count in collections.Counter(a).items() if count > 1])
+
 #%%
 vocab_vectorized = CountVectorizer()
 vocab_vectorized.fit(test)
@@ -57,7 +68,6 @@ vector = vocab_vectorized.transform(test)
 print(vector.shape)
 print(type(vector))
 print(vector.toarray())
-
 
 #%% --------- play from web ------------
 # list of text documents
@@ -73,3 +83,13 @@ print(type(vector))
 print(vector.toarray())
 #%%
 
+measurements = [
+    {'city': 'Dubai', 'temperature': 33.},
+    {'city': 'London', 'temperature': 12.},
+    {'city': 'San Francisco', 'temperature': 18.},
+]
+
+print(type(measurements))
+
+
+#%%
