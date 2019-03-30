@@ -42,72 +42,14 @@ the_vocab = traindata_token['traindata'].apply(lambda x: [item for item in x if 
 the_vocab = the_vocab
 print(the_vocab)
 print(type(the_vocab))
-
-#%% last play
-
-new = the_vocab.apply(func = lambda x: ' '.join(x))
-
-vec = CountVectorizer()
-vec = vec.fit_transform(new).todense()
-# print(vec.vocabulary_)
-
-print(vec.shape)
-print(type(vec))
-#%% ----play ----
-playcab = [
-    'abc',
-    'devbsdf',
-    'lskdjfkjlkjsdf',
-    'lksdflkj'
-]
-
-print(playcab)
-
-
-u = the_vocab
-u = u.loc[0]
-u = ' '.join(u)
-
-um = []
-um.append(u)
-
-print(um)
-
-# vec = CountVectorizer()
-# vec.fit_transform(u)
-# u = the_vocab['traindata']
-# u = the_vocab.loc[0]
-
-## working with a series of  list 
-
-
-
-# pd.concat(the_vocab['vocab'])
-# u = u.to_string()
-
-# u = ['ab','cd','ef']
-# hu = ','
-
-# u = ' '.join(u)
-
-# u = str.join()
-# print(type(u))
-# print(type(u))
-
-#%% play 2
-s1 = pd.Series(['a', 'b'])
-s2 = pd.Series(['c', 'd'])
-print(s1)
-
 #%% ----------Sort each row in alphabetial order -----------
-the_vocab.columns = ['vocab']
-
-sorted_vocab = the_vocab['vocab'].apply(sorted).to_frame()
-print(sorted_vocab)
-
+sorted_vocab = the_vocab.apply(sorted)
+# print(sorted_vocab)
+print(type(sorted_vocab))
 #%% ------------Feature extraction --------------
 vocab = []
-sorted_vocab['vocab'].apply(lambda x: [vocab.append(word) for word in x if word not in vocab])
+sorted_vocab.apply(lambda x: [vocab.append(word) for word in x if word not in vocab])
+# print(vocab)
 
 #%% -----------Sort vocab -----------------
 vocab = sorted(vocab)
@@ -116,10 +58,24 @@ print(vocab)
 
 
 #%% -------------- check for duplicates ------------
-a = vocab 
-print([item for item, count in collections.Counter(a).items() if count > 1])
+dupe_list = vocab 
+print([item for item, count in collections.Counter(dupe_list).items() if count > 1])
 
 #%% ------------- Vectorize ------------- 
+new = the_vocab.apply(func=lambda x: ' '.join(x))
+
+vec = CountVectorizer()
+vec = vec.fit_transform(new).todense()
+# print(vec.vocabulary_)
+
+print(vec.shape)
+print(type(vec))
+
+
+#%%
+
+
+
 # print(type(vocab))
 corpus = [
     'All my cats in a row',
