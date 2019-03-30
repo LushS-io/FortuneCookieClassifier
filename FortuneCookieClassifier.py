@@ -10,6 +10,7 @@ import nltk
 from nltk.tokenize import word_tokenize
 import collections
 from sklearn.linear_model import Perceptron
+import sys
 
 # %% import datasets
 # cwd = os.getcwd()
@@ -34,8 +35,7 @@ traindata_token = x.to_frame()
 print(type(traindata_token))
 print(traindata_token)
 #%% ----------- Tokenize stop words ------------
-s = stopwords['stopwords']
-s = s.to_list() #flatten into list 
+s = stopwords['stopwords'].tolist()  # flatten to list
 print(s)
 #%% -----------Remove stop words ------------
 the_vocab = traindata_token['traindata'].apply(lambda x: [item for item in x if item not in s])
