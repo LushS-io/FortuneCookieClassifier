@@ -9,6 +9,7 @@ from sklearn.naive_bayes import MultinomialNB
 import nltk
 from nltk.tokenize import word_tokenize
 import collections
+from sklearn.linear_model import Perceptron
 
 # %% import datasets
 # cwd = os.getcwd()
@@ -34,12 +35,43 @@ print(type(traindata_token))
 print(traindata_token)
 #%% ----------- Tokenize stop words ------------
 s = stopwords['stopwords']
-s = s.to_list()
+s = s.to_list() #flatten into list 
 print(s)
 #%% -----------Remove stop words ------------
 the_vocab = traindata_token['traindata'].apply(lambda x: [item for item in x if item not in s])
-the_vocab = the_vocab.to_frame()
+the_vocab = the_vocab
 print(the_vocab)
+print(type(the_vocab))
+
+
+#%% ----play ----
+u = the_vocab
+u = u.loc[0]
+' '.join(u)
+# u = the_vocab['traindata']
+# u = the_vocab.loc[0]
+
+## working with a series of  list 
+
+
+
+# pd.concat(the_vocab['vocab'])
+# u = u.to_string()
+
+# u = ['ab','cd','ef']
+# hu = ','
+
+# u = ' '.join(u)
+
+# u = str.join()
+# print(type(u))
+# print(type(u))
+
+#%% play 2
+s1 = pd.Series(['a', 'b'])
+s2 = pd.Series(['c', 'd'])
+print(s1)
+
 #%% ----------Sort each row in alphabetial order -----------
 the_vocab.columns = ['vocab']
 
@@ -53,43 +85,36 @@ sorted_vocab['vocab'].apply(lambda x: [vocab.append(word) for word in x if word 
 #%% -----------Sort vocab -----------------
 vocab = sorted(vocab)
 print(vocab)
+# pd.DataFrame(vocab).shape
+
 
 #%% -------------- check for duplicates ------------
 a = vocab 
 print([item for item, count in collections.Counter(a).items() if count > 1])
 
-#%%
-vocab_vectorized = CountVectorizer()
-vocab_vectorized.fit(test)
-print(vocab_vectorized.vocabulary_)
-
-vector = vocab_vectorized.transform(test)
-# summarize encoded vector
-print(vector.shape)
-print(type(vector))
-print(vector.toarray())
-
-#%% --------- play from web ------------
-# list of text documents
-text = ["The quick brown fox jumped over the lazy dog."]
-v = CountVectorizer()
-v.fit(text)
-print(v.vocabulary_)
-
-vector = v.transform(text)
-# summarize encoded vector
-print(vector.shape)
-print(type(vector))
-print(vector.toarray())
-#%%
-
-measurements = [
-    {'city': 'Dubai', 'temperature': 33.},
-    {'city': 'London', 'temperature': 12.},
-    {'city': 'San Francisco', 'temperature': 18.},
+#%% ------------- Vectorize ------------- 
+# print(type(vocab))
+corpus = [
+    'All my cats in a row',
+    'When my cat sits down, she looks like a Furby toy!',
+    'The cat from outer space',
+    'Sunshine loves to sit like this for some reason.'
 ]
 
-print(type(measurements))
+print(type(corpus))
 
+vocab_vectorized = CountVectorizer()
+vocab_vectorized.fit_transform(the_vocab).todense()
+#%%
+# vocab_vectorized.fit(x)
+print(vocab_vectorized.vocabulary_)
+# vector = vocab_vectorized.transform(x)
+# summarize encoded vector
+print(vector.shape)
+print(type(vector))
+print(vector.toarray())
+
+# %% -------------- perform perceptron ---------------
+Perceptron(vector)
 
 #%%
