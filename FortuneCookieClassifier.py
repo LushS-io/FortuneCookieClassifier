@@ -46,12 +46,13 @@ print(type(the_vocab))
 #%% last play
 
 new = the_vocab.apply(func = lambda x: ' '.join(x))
-print(type(new[0]))
 
 vec = CountVectorizer()
-vec.fit_transform(new)
-print(vec)
+vec = vec.fit_transform(new).todense()
+# print(vec.vocabulary_)
 
+print(vec.shape)
+print(type(vec))
 #%% ----play ----
 playcab = [
     'abc',
