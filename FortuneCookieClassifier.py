@@ -39,7 +39,7 @@ s = s.to_list() #flatten into list
 print(s)
 #%% -----------Remove stop words ------------
 the_vocab = traindata_token['traindata'].apply(lambda x: [item for item in x if item not in s])
-the_vocab = the_vocab
+the_vocab = the_vocab #-------the_vocab is trainining data without stopwords
 print(the_vocab)
 print(type(the_vocab))
 #%% ----------Sort each row in alphabetial order -----------
