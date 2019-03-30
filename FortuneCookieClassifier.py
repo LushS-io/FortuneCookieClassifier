@@ -62,42 +62,22 @@ dupe_list = vocab
 print([item for item, count in collections.Counter(dupe_list).items() if count > 1])
 
 #%% ------------- Vectorize ------------- 
-new = the_vocab.apply(func=lambda x: ' '.join(x))
+np.set_printoptions(threshold=sys.maxsize)
+train_data_corpus = the_vocab.apply(func=lambda x: ' '.join(x))
 
-vec = CountVectorizer()
-vec = vec.fit_transform(new).todense()
-# print(vec.vocabulary_)
+vectorized = CountVectorizer()
 
-print(vec.shape)
-print(type(vec))
+vectorized.fit_transform(train_data_corpus).todense()
 
+vectorized.fit(train_data_corpus)
+# print(vectorized.vocabulary_)
+vector = vectorized.transform(train_data_corpus)
 
-#%%
-
-
-
-# print(type(vocab))
-corpus = [
-    'All my cats in a row',
-    'When my cat sits down, she looks like a Furby toy!',
-    'The cat from outer space',
-    'Sunshine loves to sit like this for some reason.'
-]
-
-print(type(corpus))
-
-vocab_vectorized = CountVectorizer()
-vocab_vectorized.fit_transform(the_vocab).todense()
-#%%
-# vocab_vectorized.fit(x)
-print(vocab_vectorized.vocabulary_)
-# vector = vocab_vectorized.transform(x)
-# summarize encoded vector
 print(vector.shape)
 print(type(vector))
 print(vector.toarray())
 
 # %% -------------- perform perceptron ---------------
-Perceptron(vector)
+# Perceptron(vector) # --------- not working ----------
 
 #%%
