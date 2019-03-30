@@ -43,11 +43,37 @@ the_vocab = the_vocab
 print(the_vocab)
 print(type(the_vocab))
 
+#%% last play
+
+new = the_vocab.apply(func = lambda x: ' '.join(x))
+print(type(new[0]))
+
+vec = CountVectorizer()
+vec.fit_transform(new)
+print(vec)
 
 #%% ----play ----
+playcab = [
+    'abc',
+    'devbsdf',
+    'lskdjfkjlkjsdf',
+    'lksdflkj'
+]
+
+print(playcab)
+
+
 u = the_vocab
 u = u.loc[0]
-' '.join(u)
+u = ' '.join(u)
+
+um = []
+um.append(u)
+
+print(um)
+
+# vec = CountVectorizer()
+# vec.fit_transform(u)
 # u = the_vocab['traindata']
 # u = the_vocab.loc[0]
 
