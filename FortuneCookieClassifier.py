@@ -14,14 +14,27 @@ import sys
 
 # %% import datasets
 # cwd = os.getcwd()
-traindata = pd.read_csv(filepath_or_buffer="./fortunecookiedata/traindata.txt",header=None,names=['traindata'])
-trainlabels = pd.read_csv(filepath_or_buffer='./fortunecookiedata/trainlabels.txt',names=['trainlabels'])
+# traindata = pd.read_csv(filepath_or_buffer="./fortunecookiedata/traindata.txt",header=None,names=['traindata'])
+# trainlabels = pd.read_csv(filepath_or_buffer='./fortunecookiedata/trainlabels.txt',names=['trainlabels'])
 
-stopwords = pd.read_csv(filepath_or_buffer="./fortunecookiedata/stoplist.txt",header=None,names=['stopwords'])
+# stopwords = pd.read_csv(filepath_or_buffer="./fortunecookiedata/stoplist.txt",header=None,names=['stopwords'])
 
-testdata = pd.read_csv(filepath_or_buffer='./fortunecookiedata/testdata.txt',header=None,names=['testdata'])
-testlabels = pd.read_csv(filepath_or_buffer='./fortunecookiedata/testlabels.txt',header=None,names=['testlabels'])
+# testdata = pd.read_csv(filepath_or_buffer='./fortunecookiedata/testdata.txt',header=None,names=['testdata'])
+# testlabels = pd.read_csv(filepath_or_buffer='./fortunecookiedata/testlabels.txt',header=None,names=['testlabels'])
 
+# ---------option to use personal public s3 buckets to pull data -------------
+traindata = pd.read_csv(
+    "https://s3-us-west-2.amazonaws.com/fortunecookie-dataset/fortuneCookie_data/traindata.txt", header=None, names=['traindata'])
+trainlabels = pd.read_csv(
+    "https://s3-us-west-2.amazonaws.com/fortunecookie-dataset/fortuneCookie_data/trainlabels.txt", names=['trainlabels'])
+
+stopwords = pd.read_csv(
+    "https://s3-us-west-2.amazonaws.com/fortunecookie-dataset/fortuneCookie_data/stoplist.txt", header=None, names=['stopwords'])
+testdata = pd.read_csv(
+    "https://s3-us-west-2.amazonaws.com/fortunecookie-dataset/fortuneCookie_data/testdata.txt",header=None,names=['testdata'])
+testlabels = pd.read_csv(
+    "https://s3-us-west-2.amazonaws.com/fortunecookie-dataset/fortuneCookie_data/testlabels.txt", header=None, names=['testlabels']
+)
 
 '''Create a dictionary of words in the training data. Utilize the stopwords list to remove insignificant words.'''
 # %% ----------- pre-processing -----------
@@ -78,6 +91,6 @@ print(type(vector))
 print(vector.toarray())
 
 # %% -------------- perform perceptron ---------------
-# Perceptron(vector) # --------- not working ----------
+# Perceptron(vector) # --------- next to implement ----------
 
 #%%
