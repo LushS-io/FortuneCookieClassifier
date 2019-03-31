@@ -34,12 +34,14 @@ testdata = pd.read_csv(
     "https://s3-us-west-2.amazonaws.com/fortunecookie-dataset/fortuneCookie_data/testdata.txt",header=None,names=['testdata'])
 testlabels = pd.read_csv(
     "https://s3-us-west-2.amazonaws.com/fortunecookie-dataset/fortuneCookie_data/testlabels.txt", header=None, names=['testlabels']
+
 )
 
 '''Create a dictionary of words in the training data. Utilize the stopwords list to remove insignificant words.'''
 # %% ----------- pre-processing -----------
 # traindata.columns = ['traindata']
 traindata.head()
+traindata.shape
 # %% --------------Tokenize traindata-----------
 x = traindata['traindata'].str.split()
 # traindata_token = word_tokenize(x)
@@ -69,7 +71,6 @@ vocab = sorted(vocab)
 print(vocab)
 # pd.DataFrame(vocab).shape
 
-
 #%% -------------- check for duplicates ------------
 dupe_list = vocab 
 print([item for item, count in collections.Counter(dupe_list).items() if count > 1])
@@ -80,17 +81,44 @@ train_data_corpus = the_vocab.apply(func=lambda x: ' '.join(x))
 
 vectorized = CountVectorizer()
 
-vectorized.fit_transform(train_data_corpus).todense()
+vector = vectorized.fit_transform(train_data_corpus).todense()
 
-vectorized.fit(train_data_corpus)
+
+# vectorized.fit(train_data_corpus)
 # print(vectorized.vocabulary_)
-vector = vectorized.transform(train_data_corpus)
+# vector = vectorized.transform(train_data_corpus)
 
 print(vector.shape)
 print(type(vector))
-print(vector.toarray())
+# print(vector.toarray())
+print(vector)
+
+#%% --- check that shapes are correct ---
+print(vector.shape)
+print(testlabels.shape)
+print(type(vectorized))
+print(type(testlabels))
+
+#%% --- see vectorized ---
+print(vectorized.vocabulary_)
 
 # %% -------------- perform perceptron ---------------
 # Perceptron(vector) # --------- next to implement ----------
+train = Perceptron()
+# train = Perceptron(alpha=0.0001, fit_intercept=True, max_iter=None, tol= None, 
+# shuffle=True, verbose=0, eta0=1, n_jobs=1, random_state=0, class_weight=None, n_iter=None)
+
+# print(testlabels['testlabels'])
+# train.fit(vectorized.vocabulary_,)
+
+# --- x needs to be arraylike
+X = np.array(vectorized.vocabulary_.values())
+# X.reshape(332,693)
+
+# X.reshape(332,693)
+print(type(X))
+print(X)
+
+# train.fit(X,testlabels['testlabels'])
 
 #%%
