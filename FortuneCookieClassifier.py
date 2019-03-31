@@ -100,25 +100,8 @@ print(type(vectorized))
 print(type(testlabels))
 
 #%% --- see vectorized ---
-print(vectorized.vocabulary_)
+print(vector)
 
 # %% -------------- perform perceptron ---------------
+
 # Perceptron(vector) # --------- next to implement ----------
-train = Perceptron()
-# train = Perceptron(alpha=0.0001, fit_intercept=True, max_iter=None, tol= None, 
-# shuffle=True, verbose=0, eta0=1, n_jobs=1, random_state=0, class_weight=None, n_iter=None)
-
-# print(testlabels['testlabels'])
-# train.fit(vectorized.vocabulary_,)
-
-# --- x needs to be arraylike
-X = np.array(vectorized.vocabulary_.values())
-# X.reshape(332,693)
-
-# X.reshape(332,693)
-print(type(X))
-print(X)
-
-# train.fit(X,testlabels['testlabels'])
-
-#%%
