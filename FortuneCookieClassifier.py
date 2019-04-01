@@ -40,10 +40,11 @@ testlabels = pd.read_csv(
 )
 
 '''Create a dictionary of words in the training data. Utilize the stopwords list to remove insignificant words.'''
-# %% ----------- pre-processing -----------
+# %% ----------- exploratory data  analysis -----------
 # traindata.columns = ['traindata']
 traindata.head()
-traindata.shape
+print(traindata.shape)
+print(trainlabels.shape)
 # %% --------------Tokenize traindata-----------
 x = traindata['traindata'].str.split()
 # traindata_token = word_tokenize(x)
@@ -97,9 +98,9 @@ print(vector)
 
 #%% --- check that shapes are correct ---
 print(vector.shape)
-print(testlabels.shape)
+print(trainlabels.shape)
 print(type(vectorized))
-print(type(testlabels))
+print(type(trainlabels))
 
 #%% --- see vectorized ---
 print(vector)
@@ -116,5 +117,34 @@ print(D)
 w = pd.Series(data=[0] * vector.shape[1])
 print(w.size)
 print(w)
+
+#%% algorithm from professor 
+# loop for every training iteration...basically for loop every row
+
+#%% example to learn from  /////////////////////////
+from sklearn.datasets import load_digits
+from sklearn.linear_model import Perceptron
+
+X, y = load_digits(return_X_y=True)
+clf = Perceptron(tol=1e-3, random_state=0)
+clf.fit(X, y)
+Perceptron(alpha=0.0001, class_weight=None, early_stopping=False, eta0=1.0,
+           fit_intercept=True, max_iter=None, n_iter=None, n_iter_no_change=5,
+           n_jobs=None, penalty=None, random_state=0, shuffle=True, tol=0.001,
+           validation_fraction=0.1, verbose=0, warm_start=False)
+clf.score(X, y)  # doctest: +ELLIPSIS
+ # /////////////////////////
+
+#%% get data into correct form to use Perceptron from sklearn
+X1 = vector 
+# print(type(X1))
+# print(vector)
+y1 = np.array(trainlabels).ravel()
+print(type(y1))
+
+#%% Run Perceptron on data
+mad  = Perceptron(max_iter=20, tol=1e-3)
+mad.fit(X1,y1)
+mad.score(X1,y1)
 
 #%%
