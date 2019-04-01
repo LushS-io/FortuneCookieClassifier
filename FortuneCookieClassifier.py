@@ -12,6 +12,8 @@ import collections
 from sklearn.linear_model import Perceptron
 import sys
 
+print('pandas version: {}'.format(pd.__version__))
+
 # %% import datasets
 # cwd = os.getcwd()
 # traindata = pd.read_csv(filepath_or_buffer="./fortunecookiedata/traindata.txt",header=None,names=['traindata'])
@@ -104,4 +106,15 @@ print(vector)
 
 # %% -------------- perform perceptron ---------------
 
-# Perceptron(vector) # --------- next to implement ----------
+# --- check shape ---
+D = vector.shape[1] # D = 
+print(D)
+
+#%% --- create series of empty weights --- 
+# weight vector should be the length of vocabulary
+
+w = pd.Series(data=[0] * vector.shape[1])
+print(w.size)
+print(w)
+
+#%%
