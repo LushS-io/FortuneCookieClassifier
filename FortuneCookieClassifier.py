@@ -52,6 +52,10 @@ x = traindata['traindata'].str.split()
 traindata_token = x.to_frame()
 print(type(traindata_token))
 print(traindata_token)
+
+# --------------
+x_test = testdata['testdata'].str.split()
+x_test = x.to_frame()
 #%% ----------- Tokenize stop words ------------
 s = stopwords['stopwords'].tolist()  # flatten to list
 print(s)
@@ -60,15 +64,20 @@ the_vocab = traindata_token['traindata'].apply(lambda x: [item for item in x if 
 the_vocab = the_vocab #-------the_vocab is trainining data without stopwords
 print(the_vocab)
 print(type(the_vocab))
+
+# -------------
+the_vocab_test = x_test.apply(lambda x: [item for item in x if item not in s])
+print(the_vocab_test)
+
 #%% ----------Sort each row in alphabetial order -----------
 sorted_vocab = the_vocab.apply(sorted)
+sorted_vocab_test = the_vocab_test.apply(sorted)
 # print(sorted_vocab)
 print(type(sorted_vocab))
 #%% ------------Feature extraction --------------
 vocab = []
 sorted_vocab.apply(lambda x: [vocab.append(word) for word in x if word not in vocab])
 # print(vocab)
-
 #%% -----------Sort vocab -----------------
 vocab = sorted(vocab)
 print(vocab)
@@ -82,10 +91,19 @@ print([item for item, count in collections.Counter(dupe_list).items() if count >
 np.set_printoptions(threshold=sys.maxsize)
 train_data_corpus = the_vocab.apply(func=lambda x: ' '.join(x))
 
+print((the_vocab_test))
+
 vectorized = CountVectorizer()
 
 vector = vectorized.fit_transform(train_data_corpus).todense()
 
+# -----------
+# print(the_vocab_test)
+the_vocab_test = pd.Series(the_vocab_test['traindata'])
+test_data_corpus = the_vocab_test.apply(func=lambda x: ' '.join(x))
+
+
+# ------------
 
 # vectorized.fit(train_data_corpus)
 # print(vectorized.vocabulary_)
@@ -102,8 +120,14 @@ print(trainlabels.shape)
 print(type(vectorized))
 print(type(trainlabels))
 
+#----------
+print(testlabels.shape)
+
 #%% --- see vectorized ---
-print(vector)
+# print(vector)
+vew = vector.tolist()
+print(vew)
+
 
 # %% -------------- perform perceptron ---------------
 
@@ -114,14 +138,40 @@ print(D)
 #%% --- create series of empty weights --- 
 # weight vector should be the length of vocabulary
 
-w = pd.Series(data=[0] * vector.shape[1])
+# w = pd.Series(data=[0] * vector.shape[1])
 print(w.size)
-print(w)
+print(w.shape)
 
-#%% algorithm from professor 
-# loop for every training iteration...basically for loop every row
+#%% ---- Perceptron functions -------
+def predict(row, weights):
+	activation = weights[0] #bias?
+	for i in range(len(row)-1): #for every weight 
+		activation += weights[i + 1] * row[i]
+	return 1.0 if activation >= 0.0 else 0.0
 
-#%% example to learn from  /////////////////////////
+
+def train_weights(train, l_rate, n_epoch):
+	weights = [0.0 for i in range(len(train[0]))]
+	for epoch in range(n_epoch):
+		sum_error = 0.0
+		for row in train:
+			prediction = predict(row, weights)
+			error = row[-1] - prediction
+			sum_error += error**2
+			weights[0] = weights[0] + l_rate * error
+			for i in range(len(row)-1):
+				weights[i + 1] = weights[i + 1] + l_rate * error * row[i]
+		print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
+	return weights
+
+#%% --- Run Perception ---
+l_rate = 1 #learning rate
+n_epoch = 20  # number of training iterations
+weights = train_weights(vew, l_rate, n_epoch) #training step
+print("weight: {}".format(weights)) #print 
+
+#region - Sklearn 
+#%% example to learn from  ///////////////////////// using sklearn
 from sklearn.datasets import load_digits
 from sklearn.linear_model import Perceptron
 
@@ -148,3 +198,11 @@ mad.fit(X1,y1)
 mad.score(X1,y1)
 
 #%%
+print(testlabels.shape)
+print(testdata.shape)
+print(type(testdata))
+print(type(testlabels))
+
+# clf.score(X1,y1)
+
+#endregion
