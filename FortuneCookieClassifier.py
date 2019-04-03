@@ -164,16 +164,20 @@ def my_predict(example, weight):
         y_hat = y_hat + weights[i + 1] * example[i]
     return 1.0 if y_hat >= 0.0 else 0.0
 
-def update(parameter_list):
-	pass
+def update(weight, learning_rate, train_label, train):
+    w = weight + learning_rate * train_label * train
+    return w
+
+def mistake_check(x):
+    pass
 
 def my_Perceptron(train, train_label, n_epoch, learning_rate = 1):
 	weight = np.zeros(vector.shape[0]) # init weights
 	for epoch in range(n_epoch): # for each training iter
 	    for example in train:# for each traiing example
 		    my_predict(example, weight)# run predict
-	# if mistake
-		# run update	
+	if mistake_check() > 0: # if mistake
+		print("mistake found")# run update	
 	return weight #final weight
 #%%
 my_Perceptron(train=vector,train_label=trainlabels, n_epoch=20)
