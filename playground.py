@@ -1,5 +1,6 @@
 #%%
 import pandas as pd
+import numpy as np
 
 #%% play from web
 
@@ -51,6 +52,17 @@ l_rate = 0.1
 n_epoch = 5
 weights = train_weights(dataset, l_rate, n_epoch)
 print(weights)
+
+
+#%%
+x = np.matrix(np.arange(12).reshape((3, 4)))
+x
+#matrix([[0,  1,  2,  3],
+ #       [4,  5,  6,  7],
+  #      [8,  9, 10, 11]])
+y = x[0].tolist()
+list(y[0])
+#[[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]]
 
 
 #%%

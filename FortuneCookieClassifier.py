@@ -67,7 +67,7 @@ the_vocab = the_vocab  # -------the_vocab is trainining data without stopwords
 print(the_vocab)
 print(type(the_vocab))
 
-# -------------
+# ------------- for test data ------  repeat
 the_vocab_test = x_test.apply(lambda x: [item for item in x if item not in s])
 print(the_vocab_test)
 
@@ -94,65 +94,95 @@ print([item for item, count in collections.Counter(dupe_list).items() if count >
 np.set_printoptions(threshold=sys.maxsize)
 train_data_corpus = the_vocab.apply(func=lambda x: ' '.join(x))
 
-print((the_vocab_test))
+print(train_data_corpus)
+
+#%% --- 
 
 vectorized = CountVectorizer()
 
-vector = vectorized.fit_transform(train_data_corpus).todense()
+# --- get training data in order ---
+train_data_corpus_vectorized = vectorized.fit_transform(train_data_corpus).todense()
+# print(train_data_corpus_vectorized)
+print(type(train_data_corpus_vectorized))
+print(train_data_corpus_vectorized.shape)
 
+# %%
 # -----------
-# print(the_vocab_test)
-the_vocab_test = pd.Series(the_vocab_test['traindata'])
-test_data_corpus = the_vocab_test.apply(func=lambda x: ' '.join(x))
-
-
-# ------------
+print(the_vocab_test)
+# the_vocab_test = pd.Series(the_vocab_test['traindata'])
+# test_data_corpus = the_vocab_test.apply(func=lambda x: ' '.join(x))
+# print(test_data_corpus)
+# ************* may still need to remove the stop words **************
 
 # vectorized.fit(train_data_corpus)
 # print(vectorized.vocabulary_)
 # vector = vectorized.transform(train_data_corpus)
 
-print(vector.shape)
-print(type(vector))
+# print(vector.shape)
+# print(type(vector))
 # print(vector.toarray())
-print(vector)
+# print(vector)
 
 # %% --- check that shapes are correct ---
-print(vector.shape)
-print(trainlabels.shape)
-print(type(vectorized))
-print(type(trainlabels))
+# print(vector.shape)
+# print(trainlabels.shape)
+# print(type(vectorized)) #vectorized is the train_data with removed stop and vectorized
+# print(type(trainlabels)) # the training labels
 
 # ----------
-print(testlabels.shape)
+# print(testlabels.shape)
 
 # %% --- see vectorized ---
 # print(vector)
-vew = vector.tolist()
-print(vew)
+# vew = vector.tolist()
+# print(vew)
 
 # %% ---- Perceptron functions -------
 # %% --- start another perceptron iteration from scratch ---
 
 
-def my_predict(example, weight):
-    y_hat = weight[0]
-    for i in range(len(example)-1):
-        y_hat = y_hat + weight[i + 1] * example[i]
-    return 1.0 if y_hat >= 0.0 else 0.0
+def flatten(l): return [item for sublist in l for item in sublist]
 
+# def my_predict(example, weight):
+#     y_hat = weight[0]
+#     for i in range(len(example)-1):
+#         y_hat = y_hat + weight[i + 1] * example[i]
+#     return 1.0 if y_hat >= 0.0 else 0.0 # if y_hat is >=0 then 
+
+def my_predict(example, weight):
+    y_hat = weight[0] # give the initial 0 from first weight
+    x_i = example.tolist() #  remove matrix layer
+    x_i = list(x_i[0]) # remove list of list layer to just  list
+    x_i = np.array(x_i) #Make np array again
+    w_i = np.array(weight)
+
+    print(type(x_i))
+    print(x_i)
+    print(type(w_i))
+    print(w_i)
+
+    y_hat += np.dot(x_i,w_i)
+
+    print(type(example))
+    print(example.shape)
+    print(example)
+    print(type(weight))
+    print(weight.shape)
+    print(weight)
+    # y_hat += np.dot(example,weight)
+    return 1.0
 
 def update(weight, learning_rate, train_label, train):
     w = weight + learning_rate * train_label * train
     return w
-
 
 def mistake_check(x):
     pass
 
 
 def my_Perceptron(train, train_label, n_epoch, learning_rate=1):
-    weight = np.zeros(vector.shape[0])  # init weights
+    weight = np.zeros(train.shape[1])  # init weights
+    weight = weight.T
     n = 0
     for epoch in range(n_epoch):  # for each training iter
         i = 0
@@ -168,8 +198,11 @@ def my_Perceptron(train, train_label, n_epoch, learning_rate=1):
 
 
 # %% ---- RUN ----
-my_Perceptron(train=vector, train_label=trainlabels, n_epoch=20)
+print(train_data_corpus_vectorized.shape)
+print(trainlabels.shape)
+my_Perceptron(train=train_data_corpus_vectorized, train_label=trainlabels, n_epoch=20)
 
+# every example against the weight vector should give the proper train label...else mistake and update weights
 
 # %% Angeleca Code
 
