@@ -156,10 +156,10 @@ def my_predict(example, weight):
     x_i = np.array(x_i) #Make np array again
     w_i = np.array(weight)
 
-    print(type(x_i))
-    print(x_i)
-    print(type(w_i))
-    print(w_i)
+    # print(type(x_i))
+    # print(x_i)
+    # print(type(w_i))
+    # print(w_i)
 
     y_hat += np.dot(x_i,w_i)
 
