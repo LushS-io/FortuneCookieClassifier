@@ -149,19 +149,19 @@ def flatten(l): return [item for sublist in l for item in sublist]
 #         y_hat = y_hat + weight[i + 1] * example[i]
 #     return 1.0 if y_hat >= 0.0 else 0.0 # if y_hat is >=0 then 
 
-def my_predict(example, weight):
+def my_predict(example, weight): # example = one row from training data  && weigtht = the weight vector we are training
     y_hat = weight[0] # give the initial 0 from first weight
-    x_i = example.tolist() #  remove matrix layer
+    x_i = example.tolist() # remove matrix layer
     x_i = list(x_i[0]) # remove list of list layer to just  list
-    x_i = np.array(x_i) #Make np array again
-    w_i = np.array(weight)
+    x_i = np.array(x_i) # Make np array again
+    w_i = np.array(weight) # make weight np array
 
-    # print(type(x_i))
-    # print(x_i)
-    # print(type(w_i))
-    # print(w_i)
+    print()
 
-    y_hat += np.dot(x_i,w_i)
+    print(x_i)
+    print(w_i)
+
+    y_hat += np.dot(x_i,w_i) # compute dot product ... y_hat = x_i * w_i
 
     return y_hat
 
@@ -169,7 +169,7 @@ def update(weight, learning_rate, train_label, train):
     w = weight + learning_rate * train_label * train
     return w
 
-def mistake_check(x):
+def mistake_check(y_hat, labels):
     pass
 
 
@@ -183,10 +183,11 @@ def my_Perceptron(train, train_label, n_epoch, learning_rate=1):
         for example in train:  # for each traiing example
             prediction = my_predict(example, weight)  # run predict
             i+=1
-            print('prediction = {} || {}'.format(prediction,i))
-    print(n)
-    if mistake_check(0):  # if mistake
-        print("mistake found")  # run update
+            error = 1 - prediction# calculate error : error = expected Y - given Y(prediction)
+            # print('prediction = {} || {}'.format(prediction,i))
+            if prediction == 0.0:
+                update(weight,learning_rate,train_label,train)  # if mistake
+            pass  # run update
     return weight  # final weight
 
 
@@ -263,5 +264,5 @@ def train_weights(train, l_rate, n_epoch):
 # %% --- Run Perception --- from web
 l_rate = 1  # learning rate
 n_epoch = 20  # number of training iterations
-weights = train_weights(vew, l_rate, n_epoch)  # training step
-print("weight: {}".format(weights))  # print
+# weights = train_weights(vew, l_rate, n_epoch)  # training step
+# print("weight: {}".format(weights))  # print
