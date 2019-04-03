@@ -128,23 +128,10 @@ print(testlabels.shape)
 vew = vector.tolist()
 print(vew)
 
-
-# %% -------------- perform perceptron ---------------
-
-# --- check shape ---
-D = vector.shape[1] # D = 
-print(D)
-
-#%% --- create series of empty weights --- 
-# weight vector should be the length of vocabulary
-
-# w = pd.Series(data=[0] * vector.shape[1])
-print(w.size)
-print(w.shape)
-
 #%% ---- Perceptron functions -------
 def predict(row, weights):
 	activation = weights[0] #bias?
+	# print('weights at 0 = {}'.format(activation)) # not sure what I'm checking here...
 	for i in range(len(row)-1): #for every weight 
 		activation += weights[i + 1] * row[i]
 	return 1.0 if activation >= 0.0 else 0.0
