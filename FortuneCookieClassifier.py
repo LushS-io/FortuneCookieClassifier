@@ -204,58 +204,8 @@ my_Perceptron(train=train_data_corpus_vectorized, train_label=trainlabels, n_epo
 
 # every example against the weight vector should give the proper train label...else mistake and update weights
 
-# %% Angeleca Code
-
-
-def step(example, w):
-    '''
-    '''
-    y_hat = np.sign(np.dot(w, example))
-
-    if y_hat.all() >= 0:
-        return 1
-    else:
-        return 0
-
-
-def perceptron(train, train_label, iter_t):
-    '''
-    #training example = train
-    iter_t = maxmum number of training iterations
-    output = w, final weight vector
-    '''
-    lr = 1  # learn rate
-    # print(train.shape)
-    w = [0.0 for i in range(train.shape[1])]
-    # print(w)#initalize weight vector
-    mistake = [0] * iter_t
-    for x in range(iter_t):
-
-        for e, example in enumerate(train):
-
-            sf = step(example.T, w[e])
-
-            # print(sf)
-            if sf != int(train_label.iloc[e]):
-                mistake[x] += 1
-##
-                xy = np.dot(int(train_label.iloc[e]), example)
-
-                w[e] = w[e] + lr * xy
-                # print(w[e])
-#
-
-    print(mistake)
-    return w
-
-# %% -- running
-
-
-trainlabels.shape
-perceptron(vector, trainlabels, 20)
-
 # %%
-#region - Sklearn
+#region - -----------*******   Sklearn  ------------------ ************ -----------------
 # %% example to learn from  ///////////////////////// using sklearn
 
 X, y = load_digits(return_X_y=True)
@@ -269,7 +219,7 @@ clf.score(X, y)  # doctest: +ELLIPSIS
 # /////////////////////////
 
 # %% get data into correct form to use Perceptron from sklearn
-X1 = vector
+X1 = train_data_corpus_vectorized
 # print(type(X1))
 # print(vector)
 y1 = np.array(trainlabels).ravel()
@@ -290,7 +240,7 @@ print(type(testlabels))
 
 # endregion
 
-# %%
+# %% --- from  the web ---
 
 
 def predict(row, weights):
@@ -317,7 +267,7 @@ def train_weights(train, l_rate, n_epoch):
     return weights
 
 
-# %% --- Run Perception ---
+# %% --- Run Perception --- from web
 l_rate = 1  # learning rate
 n_epoch = 20  # number of training iterations
 weights = train_weights(vew, l_rate, n_epoch)  # training step
