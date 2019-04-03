@@ -158,6 +158,15 @@ n_epoch = 20  # number of training iterations
 weights = train_weights(vew, l_rate, n_epoch) #training step
 print("weight: {}".format(weights)) #print 
 
+#%% --- start another perceptron iteration from scratch ---
+def predict():
+	pass
+
+def update(parameter_list):
+	pass
+
+def Perceptron():
+	return weight #final weight
 #%% Angeleca Code
 
 
