@@ -4,11 +4,10 @@ import pandas as pd
 import numpy as np
 import os
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.model_selection import train_test_split
-from sklearn.naive_bayes import MultinomialNB
-import nltk
-from nltk.tokenize import word_tokenize
-import collections
+# from sklearn.model_selection import train_test_split
+# from sklearn.naive_bayes import MultinomialNB
+# import nltk
+# from nltk.tokenize import word_tokenize
 from sklearn.linear_model import Perceptron
 import sys
 
@@ -159,14 +158,27 @@ weights = train_weights(vew, l_rate, n_epoch) #training step
 print("weight: {}".format(weights)) #print 
 
 #%% --- start another perceptron iteration from scratch ---
-def predict():
-	pass
+def my_predict(example, weight):
+    y_hat = weight[0]
+    for i in range(len(example)-1):
+        y_hat = y_hat + weights[i + 1] * example[i]
+    return 1.0 if y_hat >= 0.0 else 0.0
 
 def update(parameter_list):
 	pass
 
-def Perceptron(train, train_label, n_epoch):
+def my_Perceptron(train, train_label, n_epoch, learning_rate = 1):
+	weight = np.zeros(vector.shape[0]) # init weights
+	for epoch in range(n_epoch): # for each training iter
+	    for example in train:# for each traiing example
+		    my_predict(example, weight)# run predict
+	# if mistake
+		# run update	
 	return weight #final weight
+#%%
+my_Perceptron(train=vector,train_label=trainlabels, n_epoch=20)
+
+
 #%% Angeleca Code
 
 
