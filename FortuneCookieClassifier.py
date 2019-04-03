@@ -165,7 +165,7 @@ def predict():
 def update(parameter_list):
 	pass
 
-def Perceptron():
+def Perceptron(train, train_label, n_epoch):
 	return weight #final weight
 #%% Angeleca Code
 
