@@ -165,13 +165,22 @@ def my_predict(example, weight): # example = one row from training data  && weig
 
     return y_hat
 
-def update(weight, learning_rate, train_label, train):
-    w = weight + learning_rate * train_label * train
-    return w
 
-def mistake_check(y_hat, labels):
-    pass
+def mistake_check(y_hat, label):
+    label_floated = label.astype(float)
+    if y_hat == label_floated:
+        return True
+    else:
+        return False
 
+def update(weight_old, learning_rate, train_label, train_features,y_hat):
+    status = False#assume label is wrong
+    status = mistake_check(y_hat,train_label)
+    if status:
+        return weight_old # weight needs to update
+    else:
+        weight_updated = weight_old + learning_rate * train_label * train_features 
+    return weight_updated
 
 def my_Perceptron(train, train_label, n_epoch, learning_rate=1):
     weight = np.zeros(train.shape[1])  # init weights
@@ -183,10 +192,10 @@ def my_Perceptron(train, train_label, n_epoch, learning_rate=1):
         for example in train:  # for each traiing example
             prediction = my_predict(example, weight)  # run predict
             i+=1
-            error = 1 - prediction# calculate error : error = expected Y - given Y(prediction)
+            error = train_label['trainlabels'].loc[i] - prediction# calculate error : error = expected Y - given Y(prediction)
             # print('prediction = {} || {}'.format(prediction,i))
-            if prediction == 0.0:
-                update(weight,learning_rate,train_label,train)  # if mistake
+            if error > 0.0:
+                weight = update(weight,learning_rate,train_label['trainlabels'].loc[i],example,prediction)  # if mistake update weight with return from update()
             pass  # run update
     return weight  # final weight
 
