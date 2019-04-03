@@ -163,14 +163,7 @@ def my_predict(example, weight):
 
     y_hat += np.dot(x_i,w_i)
 
-    print(type(example))
-    print(example.shape)
-    print(example)
-    print(type(weight))
-    print(weight.shape)
-    print(weight)
-    # y_hat += np.dot(example,weight)
-    return 1.0
+    return y_hat
 
 def update(weight, learning_rate, train_label, train):
     w = weight + learning_rate * train_label * train
