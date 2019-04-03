@@ -12,6 +12,7 @@ import collections
 from sklearn.linear_model import Perceptron
 import sys
 
+
 print('pandas version: {}'.format(pd.__version__))
 
 # %% import datasets
@@ -148,7 +149,7 @@ def train_weights(train, l_rate, n_epoch):
 			weights[0] = weights[0] + l_rate * error
 			for i in range(len(row)-1):
 				weights[i + 1] = weights[i + 1] + l_rate * error * row[i]
-		print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
+		print('>iteration_epoch=%d, learning_rate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
 	return weights
 
 #%% --- Run Perception ---
@@ -157,6 +158,56 @@ n_epoch = 20  # number of training iterations
 weights = train_weights(vew, l_rate, n_epoch) #training step
 print("weight: {}".format(weights)) #print 
 
+#%% Angeleca Code
+
+
+def step(example, w):
+    '''
+    '''
+    y_hat = np.sign(np.dot(w, example))
+
+    if y_hat.all() >= 0:
+         return 1
+    else:
+        return 0
+
+
+def perceptron(train, train_label, iter_t):
+    '''
+    #training example = train
+    iter_t = maxmum number of training iterations
+    output = w, final weight vector
+    '''
+    lr = 1  # learn rate
+    #print(train.shape)
+    w = [0.0 for i in range(train.shape[1])]
+    #print(w)#initalize weight vector
+    mistake = [0] * iter_t
+    for x in range(iter_t):
+
+        for e, example in enumerate(train):
+
+            sf = step(example.T, w[e])
+
+            #print(sf)
+            if sf != int(train_label.iloc[e]):
+                mistake[x] += 1
+##
+                xy = np.dot(int(train_label.iloc[e]), example)
+
+                w[e] = w[e] + lr * xy
+                #print(w[e])
+#
+
+    print(mistake)
+    return w
+
+#%% -- running
+
+trainlabels.shape
+perceptron(vector,trainlabels,20)
+
+#%%
 #region - Sklearn 
 #%% example to learn from  ///////////////////////// using sklearn
 from sklearn.datasets import load_digits
