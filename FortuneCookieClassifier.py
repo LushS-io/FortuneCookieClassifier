@@ -202,85 +202,15 @@ def my_Perceptron(train, train_label, n_epoch, learning_rate=1):
         n+=1 #update epooch
         for example in train:  # for each traiing example
             prediction = my_predict(example, weight)  # run predict
-            i+=1 # update row predicted
             weight = update(weight,learning_rate,train_label['trainlabels'].loc[i],example,prediction)  # if mistake update weight with return from update()
+            i+=1 # update row predicted
             # error = train_label['trainlabels'].loc[i] - prediction# calculate error : error = expected Y - given Y(prediction)
             # print('prediction = {} || {}'.format(prediction,i))
     return weight  # final weight
 
 
 # %% ---- RUN ----
-print(train_data_corpus_vectorized.shape)
-print(trainlabels.shape)
-my_Perceptron(train=train_data_corpus_vectorized, train_label=trainlabels, n_epoch=20)
+# print(train_data_corpus_vectorized.shape)
+# print(trainlabels.shape)
+the_sauce = my_Perceptron(train=train_data_corpus_vectorized, train_label=trainlabels, n_epoch=20)
 
-# every example against the weight vector should give the proper train label...else mistake and update weights
-
-# %%
-#region - -----------*******   Sklearn  ------------------ ************ -----------------
-# %% example to learn from  ///////////////////////// using sklearn
-
-X, y = load_digits(return_X_y=True)
-clf = Perceptron(tol=1e-3, random_state=0)
-clf.fit(X, y)
-Perceptron(alpha=0.0001, class_weight=None, early_stopping=False, eta0=1.0,
-           fit_intercept=True, max_iter=None, n_iter=None, n_iter_no_change=5,
-           n_jobs=None, penalty=None, random_state=0, shuffle=True, tol=0.001,
-           validation_fraction=0.1, verbose=0, warm_start=False)
-clf.score(X, y)  # doctest: +ELLIPSIS
-# /////////////////////////
-
-# %% get data into correct form to use Perceptron from sklearn
-X1 = train_data_corpus_vectorized
-# print(type(X1))
-# print(vector)
-y1 = np.array(trainlabels).ravel()
-print(type(y1))
-
-# %% Run Perceptron on data
-mad = Perceptron(max_iter=20, tol=1e-3)
-mad.fit(X1, y1)
-mad.score(X1, y1)
-
-# %%
-print(testlabels.shape)
-print(testdata.shape)
-print(type(testdata))
-print(type(testlabels))
-
-# clf.score(X1,y1)
-
-# endregion
-
-# %% --- from  the web ---
-
-
-def predict(row, weights):
-    activation = weights[0]  # bias?
-    # print('weights at 0 = {}'.format(activation)) # not sure what I'm checking here...
-    for i in range(len(row)-1):  # for every weight
-        activation += weights[i + 1] * row[i]
-    return 1.0 if activation >= 0.0 else 0.0
-
-
-def train_weights(train, l_rate, n_epoch):
-    weights = [0.0 for i in range(len(train[0]))]
-    for epoch in range(n_epoch):
-        sum_error = 0.0
-        for row in train:
-            prediction = predict(row, weights)
-            error = row[-1] - prediction
-            sum_error += error**2
-            weights[0] = weights[0] + l_rate * error
-            for i in range(len(row)-1):
-                weights[i + 1] = weights[i + 1] + l_rate * error * row[i]
-        print('>iteration_epoch=%d, learning_rate=%.3f, error=%.3f' %
-              (epoch, l_rate, sum_error))
-    return weights
-
-
-# %% --- Run Perception --- from web
-l_rate = 1  # learning rate
-n_epoch = 20  # number of training iterations
-# weights = train_weights(vew, l_rate, n_epoch)  # training step
-# print("weight: {}".format(weights))  # print
