@@ -191,21 +191,54 @@ def my_Perceptron(train, train_label, n_epoch, learning_rate=1):
             prediction = my_predict(example, weight)  # run predict
             weight = update(weight,learning_rate,train_label['trainlabels'].loc[i],example,prediction)  # if mistake update weight with return from update()
             i+=1 # update row predicted
+    print("ran for {} epochs".format(n))
     return weight  # final weight
 
 
 # %% ---- Train Weight Vector ----
 the_sauce = my_Perceptron(train=train_data_corpus_vectorized, train_label=trainlabels, n_epoch=20)
 
-print('Success! {}'.format(the_sauce)) # :)
+print('Success, sauce made! \n\n {}'.format(the_sauce)) # :)
 
 # %% -- Test weight on test data ---
 
 # --- look at data ---
 # print(testdata.shape)
 # print(testlabels.shape)
-
-print(the_sauce.shape)
-
+# print(the_sauce.shape)
 
 #%%
+def test_predict (message,the_sauce):
+    y_hat = 0  # give the initial 0 from first weight
+    x_i = message.tolist() # remove matrix layer
+    x_i = list(x_i[0]) # remove list of list layer to just  list
+    x_i = np.array(x_i) # Make np array again
+    w_i = np.array(the_sauce) # make weight np array
+
+    print()
+
+    # print(x_i)
+    # print(w_i)
+
+    y_hat = np.dot(x_i,w_i) # compute dot product ... y_hat = x_i * w_i
+
+    return y_hat # should be a scalar
+
+def test (test_data,test_labels,the_sauce):
+    accuracy = 0.0 #initiate accuracy
+    ding = False # assume mistake 
+    i = 0 # test_label counter
+    mistake_counter = 0 # counter number of mistakes
+    for row in test_data: # loop test_data
+        prediction = test_predict(row,the_sauce) # returns y_hat prediction
+        ding = mistake_check(prediction,test_labels) # capture if true or false
+        i += 1 # keep moving
+        if ding:
+            pass
+        else:
+            mistake_counter += 1
+            
+    return accuracy
+#%% --- RUN TEST ---
+how_good = test(testdata,testlabels,the_sauce)
+print('Accuracy is: {}')
