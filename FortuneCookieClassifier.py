@@ -219,6 +219,9 @@ def my_Perceptron(train, train_label, n_epoch, learning_rate=1):
 
 
 # %% ---- Train Weight Vector ----
+X1 = np.array(train_data_sp_vectorized.todense())
+y1 = np.array(trainlabels)
+
 the_sauce = my_Perceptron(train=train_data_corpus_vectorized, train_label=trainlabels, n_epoch=20)
 
 print('Success, sauce made! \n\n {}'.format(the_sauce)) # :)
@@ -230,20 +233,19 @@ print('Success, sauce made! \n\n {}'.format(the_sauce)) # :)
 # print(testlabels.shape)
 # print(the_sauce.shape)
 
-#%%
+#%
 def test_predict (message,the_sauce):
     y_hat = 0  # give the initial 0 from first weight
-    x_i = message.tolist() # remove matrix layer
-    x_i = list(x_i[0]) # remove list of list layer to just  list
-    x_i = np.array(x_i) # Make np array again
+    # x_i = message.tolist() # remove matrix layer
+    # x_i = list(x_i[0]) # remove list of list layer to just  list
+    x_i = np.array(message) # Make np array again
     w_i = np.array(the_sauce) # make weight np array
 
-    print()
-
-    # print(x_i)
-    # print(w_i)
+    print(x_i)
+    print(w_i)
 
     y_hat = np.dot(x_i,w_i) # compute dot product ... y_hat = x_i * w_i
+    print(y_hat)
 
     return y_hat # should be a scalar
 
@@ -263,10 +265,52 @@ def test (test_data,test_labels,the_sauce):
             
     return accuracy
 #%% --- RUN TEST ---
-how_good = test(testdata['testdata'],testlabels,the_sauce)
-print('Accuracy is: {}')
+
+# use these instead of weird vectors
+X1 = np.array(train_data_sp_vectorized.todense())
+y1 = np.array(trainlabels)
+
+how_good = test(X1,y1,the_sauce)
+print('Accuracy is: {}'.format(how_good))
 #%% play
-print(train_data_sp_vectorized)
-print(test_data_sp_vectorized)
+print(train_data_sp_vectorized.toarray())
+print(test_data_sp_vectorized.toarray())
+
+#%%
+
+print(testlabels)
+#%% let's see how sklearn performs
+
+# X, y = load_digits(return_X_y=True)
+clf = Perceptron(tol=1e-3, random_state=0)
+clf.fit(X, y)
+Perceptron(alpha=0.0001, class_weight=None, early_stopping=False, eta0=1.0,
+           fit_intercept=True, max_iter=None, n_iter=None, n_iter_no_change=5,
+           n_jobs=None, penalty=None, random_state=0, shuffle=True, tol=0.001,
+           validation_fraction=0.1, verbose=0, warm_start=False)
+clf.score(X, y)  # doctest: +ELLIPSIS
+# /////////////////////////
+
+#%%
+print(X.shape)
+print(y.shape)
+
+#%% get data into correct form to use Perceptron from sklearn
+X1 = train_data_sp_vectorized 
+X1 = np.array(train_data_sp_vectorized.todense())
+print(type(X1))
+# print(X1)
+y1 = np.array(trainlabels)
+print(type(y1))
+# print(y1)
+
+print('shapes')
+print(X1.shape)
+print(y1.shape)
+#%% Run Perceptron on data
+mad = Perceptron(max_iter=20, tol=1e-3)
+mad.fit(X1, y1)
+mad.score(X1, y1)
+
 
 #%%
