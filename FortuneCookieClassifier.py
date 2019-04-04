@@ -164,17 +164,16 @@ train_data_sp_vectorized = sparse.csr_matrix(train_data_corpus_vectorized)
 
 def my_predict(example, weight): # example = one row from training data  && weigtht = the weight vector we are training
     y_hat = 0 # give the initial 0 from first weight
-    x_i = example.tolist() # remove matrix layer
-    x_i = list(x_i[0]) # remove list of list layer to just  list
-    x_i = np.array(x_i) # Make np array again
-    w_i = np.array(weight) # make weight np array
-
-    print()
+    # x_i = example.tolist() # remove matrix layer
+    # x_i = list(x_i[0]) # remove list of list layer to just  list
+    # x_i = np.array(x_i) # Make np array again
+    # w_i = np.array(weight) # make weight np array
+    # print()
 
     # print(x_i)
     # print(w_i)
 
-    y_hat = np.dot(x_i,w_i) # compute dot product ... y_hat = x_i * w_i
+    y_hat = np.dot(example,weight) # compute dot product ... y_hat = x_i * w_i
 
     return y_hat # should be a scalar
 
@@ -190,16 +189,16 @@ def update(weight_old, learning_rate, train_label, train_features,y_hat):
     status = False # assume label is wrong
     status = mistake_check(y_hat,train_label)
     
-    # fix train_features ... now declared as x_i
-    x_i = train_features.tolist() # remove matrix layer
-    x_i = list(x_i[0]) # remove list of list layer to just list
-    x_i = np.array(x_i) # Make np array again
-    #
+    # # fix train_features ... now declared as x_i
+    # x_i = train_features.tolist() # remove matrix layer
+    # x_i = list(x_i[0]) # remove list of list layer to just list
+    # x_i = np.array(x_i) # Make np array again
+    # #
 
     if status:
         return weight_old # weight predicted the correct label
     else:
-        weight_updated = weight_old + learning_rate * train_label * x_i 
+        weight_updated = weight_old + learning_rate * train_label * train_features 
         weight_updated = weight_updated.T
     return weight_updated
 
@@ -212,17 +211,19 @@ def my_Perceptron(train, train_label, n_epoch, learning_rate=1):
         n+=1 #update epooch
         for example in train:  # for each traiing example
             prediction = my_predict(example, weight)  # run predict
-            weight = update(weight,learning_rate,train_label['trainlabels'].loc[i],example,prediction)  # if mistake update weight with return from update()
+            weight = update(weight,learning_rate,train_label[i][0],example,prediction)  # if mistake update weight with return from update()
             i+=1 # update row predicted
     print("ran for {} epochs".format(n))
     return weight  # final weight
 
 
 # %% ---- Train Weight Vector ----
+
+# --- before reshape into np arrays --- easier to work with
 X1 = np.array(train_data_sp_vectorized.todense())
 y1 = np.array(trainlabels)
 
-the_sauce = my_Perceptron(train=train_data_corpus_vectorized, train_label=trainlabels, n_epoch=20)
+the_sauce = my_Perceptron(train=X1, train_label=y1, n_epoch=20)
 
 print('Success, sauce made! \n\n {}'.format(the_sauce)) # :)
 
@@ -234,18 +235,18 @@ print('Success, sauce made! \n\n {}'.format(the_sauce)) # :)
 # print(the_sauce.shape)
 
 #%
-def test_predict (message,the_sauce):
+def test_predict (messages,the_sauce):
     y_hat = 0  # give the initial 0 from first weight
     # x_i = message.tolist() # remove matrix layer
     # x_i = list(x_i[0]) # remove list of list layer to just  list
-    x_i = np.array(message) # Make np array again
-    w_i = np.array(the_sauce) # make weight np array
+    # x_i = np.array(messages) # Make np array again
+    # w_i = np.array(the_sauce) # make weight np array
 
-    print(x_i)
-    print(w_i)
+    # print(x_i)
+    # print(w_i)
 
-    y_hat = np.dot(x_i,w_i) # compute dot product ... y_hat = x_i * w_i
-    print(y_hat)
+    y_hat = np.dot(messages,the_sauce) # compute dot product ... y_hat = x_i * w_i
+    # print(y_hat)
 
     return y_hat # should be a scalar
 
@@ -270,7 +271,7 @@ def test (test_data,test_labels,the_sauce):
 X1 = np.array(train_data_sp_vectorized.todense())
 y1 = np.array(trainlabels)
 
-how_good = test(X1,y1,the_sauce)
+how_good = test(test_data=X1,test_labels=y1,the_sauce=the_sauce)
 print('Accuracy is: {}'.format(how_good))
 #%% play
 print(train_data_sp_vectorized.toarray())
