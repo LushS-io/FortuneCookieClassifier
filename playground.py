@@ -75,3 +75,13 @@ print(y)
 
 
 #%%
+weight = np.zeros(10)  # init weights
+print(weight.shape)
+weight = weight.T
+print(weight.shape)
+
+print(weight)
+print(weight.reshape((10,1)))
+
+
+#%%

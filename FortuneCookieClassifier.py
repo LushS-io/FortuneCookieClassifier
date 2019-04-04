@@ -158,8 +158,8 @@ def my_predict(example, weight): # example = one row from training data  && weig
 
     print()
 
-    print(x_i)
-    print(w_i)
+    # print(x_i)
+    # print(w_i)
 
     y_hat += np.dot(x_i,w_i) # compute dot product ... y_hat = x_i * w_i
 
@@ -180,23 +180,27 @@ def update(weight_old, learning_rate, train_label, train_features,y_hat):
         return weight_old # weight needs to update
     else:
         weight_updated = weight_old + learning_rate * train_label * train_features 
+        weight_updated = weight_updated.T
     return weight_updated
 
 def my_Perceptron(train, train_label, n_epoch, learning_rate=1):
     weight = np.zeros(train.shape[1])  # init weights
-    weight = weight.T
-    n = 0
+    # print(weight.shape)
+    weight = weight.T # this transformation may not matter
+    # print(weight.shape)
+    n = 0 # counter for number of epoch interations gone through --- on watch list 
     for epoch in range(n_epoch):  # for each training iter
-        i = 0
-        n+=1
+        i = 0 # counter for every row in traininig data
+        n+=1 #update epooch
         for example in train:  # for each traiing example
             prediction = my_predict(example, weight)  # run predict
-            i+=1
+            i+=1 # update row predicted
             error = train_label['trainlabels'].loc[i] - prediction# calculate error : error = expected Y - given Y(prediction)
             # print('prediction = {} || {}'.format(prediction,i))
-            if error > 0.0:
+            if error > 0:
                 weight = update(weight,learning_rate,train_label['trainlabels'].loc[i],example,prediction)  # if mistake update weight with return from update()
-            pass  # run update
+            else:# run update
+                print("hit something")
     return weight  # final weight
 
 
