@@ -214,3 +214,4 @@ def my_Perceptron(train, train_label, n_epoch, learning_rate=1):
 # print(trainlabels.shape)
 the_sauce = my_Perceptron(train=train_data_corpus_vectorized, train_label=trainlabels, n_epoch=20)
 
+print('Success! {}'.format(the_sauce))
