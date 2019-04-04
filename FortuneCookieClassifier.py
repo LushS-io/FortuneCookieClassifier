@@ -176,11 +176,18 @@ def mistake_check(y_hat, label):
 def update(weight_old, learning_rate, train_label, train_features,y_hat):
     status = False#assume label is wrong
     status = mistake_check(y_hat,train_label)
+    
+    # fix train_features
+    x_i = train_features.tolist() # remove matrix layer
+    x_i = list(x_i[0]) # remove list of list layer to just  list
+    x_i = np.array(x_i) # Make np array again
+    #
+
     if status:
         return weight_old # weight predicted the correct label
     else:
-        weight_updated = weight_old + learning_rate * train_label * train_features 
-        print(type(train_features))
+        weight_updated = weight_old + learning_rate * train_label * x_i 
+        # print(type(train_features))
         weight_updated = weight_updated.T
     return weight_updated
 
