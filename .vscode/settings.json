@@ -3,6 +3,10 @@
     "editor.tokenColorCustomizations": {
         "comments": "#057c23"
     },
+    "workbench.colorCustomizations": {
+        "statusBar.debuggingBackground": "#d37408"
+    },
+
     "editor.minimap.enabled": false,
     "python.pythonPath": "/Users/troy/anaconda3/bin/python",
     "python.unitTest.pyTestArgs": [
