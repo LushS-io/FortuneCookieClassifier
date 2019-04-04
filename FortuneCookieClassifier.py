@@ -199,7 +199,7 @@ def update(weight_old, learning_rate, train_label, train_features,y_hat):
         return weight_old # weight predicted the correct label
     else:
         weight_updated = weight_old + learning_rate * train_label * train_features 
-        weight_updated = weight_updated.T
+        # weight_updated = weight_updated.T # maynot need.... 
     return weight_updated
 
 def my_Perceptron(train, train_label, n_epoch, learning_rate=1):
@@ -251,19 +251,22 @@ def test_predict (messages,the_sauce):
     return y_hat # should be a scalar
 
 def test (test_data,test_labels,the_sauce):
-    accuracy = 0.0 #initiate accuracy
     ding = False # assume mistake 
     i = 0 # test_label counter
     mistake_counter = 0 # counter number of mistakes
+    correct_counter = 0 # count number of correct predictions
     for row in test_data: # loop test_data
         prediction = test_predict(row,the_sauce) # returns y_hat prediction
-        ding = mistake_check(prediction,test_labels) # capture if true or false
+        ding = mistake_check(prediction,test_labels[i][0]) # capture if true or false
         i += 1 # keep moving
         if ding:
-            pass
+            correct_counter += 1
         else:
             mistake_counter += 1
             
+    accuracy = mistake_counter / test_labels.shape[0] # get final accuracy
+    print('mistakes = {}'.format(mistake_counter))
+    print('correct = {}'.format(correct_counter))
     return accuracy
 #%% --- RUN TEST ---
 
@@ -273,42 +276,20 @@ y1 = np.array(trainlabels)
 
 how_good = test(test_data=X1,test_labels=y1,the_sauce=the_sauce)
 print('Accuracy is: {}'.format(how_good))
-#%% play
-print(train_data_sp_vectorized.toarray())
-print(test_data_sp_vectorized.toarray())
-
-#%%
-
-print(testlabels)
-#%% let's see how sklearn performs
-
-# X, y = load_digits(return_X_y=True)
-clf = Perceptron(tol=1e-3, random_state=0)
-clf.fit(X, y)
-Perceptron(alpha=0.0001, class_weight=None, early_stopping=False, eta0=1.0,
-           fit_intercept=True, max_iter=None, n_iter=None, n_iter_no_change=5,
-           n_jobs=None, penalty=None, random_state=0, shuffle=True, tol=0.001,
-           validation_fraction=0.1, verbose=0, warm_start=False)
-clf.score(X, y)  # doctest: +ELLIPSIS
-# /////////////////////////
-
-#%%
-print(X.shape)
-print(y.shape)
-
-#%% get data into correct form to use Perceptron from sklearn
+# %% ----------- SKLEARN -----------
+# ---  get data into correct form to use Perceptron from sklearn
 X1 = train_data_sp_vectorized 
 X1 = np.array(train_data_sp_vectorized.todense())
 print(type(X1))
 # print(X1)
-y1 = np.array(trainlabels)
+y1 = np.array(trainlabels).ravel()
 print(type(y1))
 # print(y1)
 
 print('shapes')
 print(X1.shape)
 print(y1.shape)
-#%% Run Perceptron on data
+# Run Perceptron on data
 mad = Perceptron(max_iter=20, tol=1e-3)
 mad.fit(X1, y1)
 mad.score(X1, y1)
