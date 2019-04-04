@@ -137,17 +137,7 @@ print(the_vocab_test)
 # vew = vector.tolist()
 # print(vew)
 
-# %% ---- Perceptron functions -------
-# %% --- start another perceptron iteration from scratch ---
-
-
-def flatten(l): return [item for sublist in l for item in sublist]
-
-# def my_predict(example, weight):
-#     y_hat = weight[0]
-#     for i in range(len(example)-1):
-#         y_hat = y_hat + weight[i + 1] * example[i]
-#     return 1.0 if y_hat >= 0.0 else 0.0 # if y_hat is >=0 then 
+# %% ---- Perceptron Functions -------
 
 def my_predict(example, weight): # example = one row from training data  && weigtht = the weight vector we are training
     y_hat = 0 # give the initial 0 from first weight
@@ -163,7 +153,7 @@ def my_predict(example, weight): # example = one row from training data  && weig
 
     y_hat = np.dot(x_i,w_i) # compute dot product ... y_hat = x_i * w_i
 
-    return y_hat
+    return y_hat # should be a scalar
 
 
 def mistake_check(y_hat, label):
@@ -174,12 +164,12 @@ def mistake_check(y_hat, label):
         return False
 
 def update(weight_old, learning_rate, train_label, train_features,y_hat):
-    status = False#assume label is wrong
+    status = False # assume label is wrong
     status = mistake_check(y_hat,train_label)
     
-    # fix train_features
+    # fix train_features ... now declared as x_i
     x_i = train_features.tolist() # remove matrix layer
-    x_i = list(x_i[0]) # remove list of list layer to just  list
+    x_i = list(x_i[0]) # remove list of list layer to just list
     x_i = np.array(x_i) # Make np array again
     #
 
@@ -187,15 +177,12 @@ def update(weight_old, learning_rate, train_label, train_features,y_hat):
         return weight_old # weight predicted the correct label
     else:
         weight_updated = weight_old + learning_rate * train_label * x_i 
-        # print(type(train_features))
         weight_updated = weight_updated.T
     return weight_updated
 
 def my_Perceptron(train, train_label, n_epoch, learning_rate=1):
     weight = np.zeros(train.shape[1])  # init weights
-    # print(weight.shape)
     weight = weight.T # this transformation may not matter
-    # print(weight.shape)
     n = 0 # counter for number of epoch interations gone through --- on watch list 
     for epoch in range(n_epoch):  # for each training iter
         i = 0 # counter for every row in traininig data
@@ -204,14 +191,21 @@ def my_Perceptron(train, train_label, n_epoch, learning_rate=1):
             prediction = my_predict(example, weight)  # run predict
             weight = update(weight,learning_rate,train_label['trainlabels'].loc[i],example,prediction)  # if mistake update weight with return from update()
             i+=1 # update row predicted
-            # error = train_label['trainlabels'].loc[i] - prediction# calculate error : error = expected Y - given Y(prediction)
-            # print('prediction = {} || {}'.format(prediction,i))
     return weight  # final weight
 
 
-# %% ---- RUN ----
-# print(train_data_corpus_vectorized.shape)
-# print(trainlabels.shape)
+# %% ---- Train Weight Vector ----
 the_sauce = my_Perceptron(train=train_data_corpus_vectorized, train_label=trainlabels, n_epoch=20)
 
-print('Success! {}'.format(the_sauce))
+print('Success! {}'.format(the_sauce)) # :)
+
+# %% -- Test weight on test data ---
+
+# --- look at data ---
+# print(testdata.shape)
+# print(testlabels.shape)
+
+print(the_sauce.shape)
+
+
+#%%
