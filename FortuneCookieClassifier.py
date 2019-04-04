@@ -150,7 +150,7 @@ def flatten(l): return [item for sublist in l for item in sublist]
 #     return 1.0 if y_hat >= 0.0 else 0.0 # if y_hat is >=0 then 
 
 def my_predict(example, weight): # example = one row from training data  && weigtht = the weight vector we are training
-    y_hat = weight[0] # give the initial 0 from first weight
+    y_hat = 0 # give the initial 0 from first weight
     x_i = example.tolist() # remove matrix layer
     x_i = list(x_i[0]) # remove list of list layer to just  list
     x_i = np.array(x_i) # Make np array again
@@ -161,7 +161,7 @@ def my_predict(example, weight): # example = one row from training data  && weig
     # print(x_i)
     # print(w_i)
 
-    y_hat += np.dot(x_i,w_i) # compute dot product ... y_hat = x_i * w_i
+    y_hat = np.dot(x_i,w_i) # compute dot product ... y_hat = x_i * w_i
 
     return y_hat
 
@@ -177,9 +177,10 @@ def update(weight_old, learning_rate, train_label, train_features,y_hat):
     status = False#assume label is wrong
     status = mistake_check(y_hat,train_label)
     if status:
-        return weight_old # weight needs to update
+        return weight_old # weight predicted the correct label
     else:
         weight_updated = weight_old + learning_rate * train_label * train_features 
+        print(type(train_features))
         weight_updated = weight_updated.T
     return weight_updated
 
@@ -195,12 +196,9 @@ def my_Perceptron(train, train_label, n_epoch, learning_rate=1):
         for example in train:  # for each traiing example
             prediction = my_predict(example, weight)  # run predict
             i+=1 # update row predicted
-            error = train_label['trainlabels'].loc[i] - prediction# calculate error : error = expected Y - given Y(prediction)
+            weight = update(weight,learning_rate,train_label['trainlabels'].loc[i],example,prediction)  # if mistake update weight with return from update()
+            # error = train_label['trainlabels'].loc[i] - prediction# calculate error : error = expected Y - given Y(prediction)
             # print('prediction = {} || {}'.format(prediction,i))
-            if error > 0:
-                weight = update(weight,learning_rate,train_label['trainlabels'].loc[i],example,prediction)  # if mistake update weight with return from update()
-            else:# run update
-                print("hit something")
     return weight  # final weight
 
 
