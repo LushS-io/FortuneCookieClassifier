@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import os
 from sklearn.feature_extraction.text import CountVectorizer
+from scipy import sparse 
 # from sklearn.model_selection import train_test_split
 # from sklearn.naive_bayes import MultinomialNB
 # import nltk
@@ -12,6 +13,8 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import Perceptron
 import sys
 
+# np.set_printoptions(threshold=sys.maxsize)
+np.set_printoptions(threshold=1000)
 
 print('pandas version: {}'.format(pd.__version__))
 
@@ -53,10 +56,13 @@ x = traindata['traindata'].str.split()
 traindata_token = x.to_frame()
 print(type(traindata_token))
 print(traindata_token)
-
-# --------------
+# %%
+# ------------- Tokenize testdata --------
 x_test = testdata['testdata'].str.split()
-x_test = x.to_frame()
+testdata_token = x_test.to_frame()
+print(type(testdata_token))
+print(testdata_token)
+
 # %% ----------- Tokenize stop words ------------
 s = stopwords['stopwords'].tolist()  # flatten to list
 print(s)
@@ -68,47 +74,64 @@ print(the_vocab)
 print(type(the_vocab))
 
 # ------------- for test data ------  repeat
-the_vocab_test = x_test.apply(lambda x: [item for item in x if item not in s])
-print(the_vocab_test)
+# the_vocab_test = x_test.apply(lambda x: [item for item in x if item not in s])
+# print(the_vocab_test)
 
 # %% ----------Sort each row in alphabetial order -----------
 sorted_vocab = the_vocab.apply(sorted)
-sorted_vocab_test = the_vocab_test.apply(sorted)
-# print(sorted_vocab)
+# sorted_vocab_test = the_vocab_test.apply(sorted) # makes no sense 
+print(sorted_vocab)
 print(type(sorted_vocab))
 # %% ------------Feature extraction --------------
 vocab = []
 sorted_vocab.apply(lambda x: [vocab.append(word)
                               for word in x if word not in vocab])
-# print(vocab)
-# %% -----------Sort vocab -----------------
+print(vocab)
+# %% -----------Sort vocab ----------------- **** lol why am I sorting alphabetically twice?
 vocab = sorted(vocab)
 print(vocab)
-# pd.DataFrame(vocab).shape
+# pd.DataFrame(vocab).shape # (693,1) ... 693 words
 
 # %% -------------- check for duplicates ------------
 dupe_list = vocab
-print([item for item, count in collections.Counter(dupe_list).items() if count > 1])
+print([item for item, count in collections.Counter(dupe_list).items() if count > 1]) # fix
+if not dupe_list:
+    print("No dupes!")
 
 # %% ------------- Vectorize -------------
-np.set_printoptions(threshold=sys.maxsize)
 train_data_corpus = the_vocab.apply(func=lambda x: ' '.join(x))
-
 print(train_data_corpus)
 
-#%% --- 
+#%% --- Vectorize test data ---------
+test_data_corpus = testdata_token['testdata'] # remove header 
+test_data_corpus = test_data_corpus.apply(func=lambda x: ' '.join(x))
+print(test_data_corpus)
 
+# %% ---- use CountVectorizer to vectorize ----
 vectorized = CountVectorizer()
 
 # --- get training data in order ---
 train_data_corpus_vectorized = vectorized.fit_transform(train_data_corpus).todense()
-# print(train_data_corpus_vectorized)
+print(train_data_corpus_vectorized)
 print(type(train_data_corpus_vectorized))
 print(train_data_corpus_vectorized.shape)
 
+# --- get test data in order ---
+test_data_corpus_vectorized = vectorized.fit_transform(test_data_corpus).todense()
+print(test_data_corpus_vectorized)
+print(type(test_data_corpus_vectorized))
+print(test_data_corpus_vectorized.shape)
+
+# %% --- back to normal csr matrix --- 
+test_data_sp_vectorized = sparse.csr_matrix(test_data_corpus_vectorized)
+# print(test_data_sp_vectorized)
+
+train_data_sp_vectorized = sparse.csr_matrix(train_data_corpus_vectorized)
+# print(train_data_sp_vectorized)
+
+
 # %%
-# -----------
-print(the_vocab_test)
+# print(the_vocab_test)
 # the_vocab_test = pd.Series(the_vocab_test['traindata'])
 # test_data_corpus = the_vocab_test.apply(func=lambda x: ' '.join(x))
 # print(test_data_corpus)
@@ -240,5 +263,10 @@ def test (test_data,test_labels,the_sauce):
             
     return accuracy
 #%% --- RUN TEST ---
-how_good = test(testdata,testlabels,the_sauce)
+how_good = test(testdata['testdata'],testlabels,the_sauce)
 print('Accuracy is: {}')
+#%% play
+print(train_data_sp_vectorized)
+print(test_data_sp_vectorized)
+
+#%%
