@@ -1,40 +1,40 @@
-#%%
+# %%
 import pandas as pd
 import numpy as np
 
-#%% play from web
+# %% play from web
 
 # create small dataset
 web_df = pd.read_csv(filepath_or_buffer="./fortunecookiedata/webdata.txt",
                      sep=' ', header=None, names=['X1', 'X2', 'Y'])
 print(web_df['X1'])
 
-#%%
+# %%
 # Make a prediction with weights
 
 
 def predict(row, weights):
-	activation = weights[0]
-	for i in range(len(row)-1):
-		activation += weights[i + 1] * row[i]
-	return 1.0 if activation >= 0.0 else 0.0
+    activation = weights[0]
+    for i in range(len(row)-1):
+        activation += weights[i + 1] * row[i]
+    return 1.0 if activation >= 0.0 else 0.0
 
 # Estimate Perceptron weights using stochastic gradient descent
 
 
 def train_weights(train, l_rate, n_epoch):
-	weights = [0.0 for i in range(len(train[0]))]
-	for epoch in range(n_epoch):
-		sum_error = 0.0
-		for row in train:
-			prediction = predict(row, weights)
-			error = row[-1] - prediction
-			sum_error += error**2
-			weights[0] = weights[0] + l_rate * error
-			for i in range(len(row)-1):
-				weights[i + 1] = weights[i + 1] + l_rate * error * row[i]
-		print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
-	return weights
+    weights = [0.0 for i in range(len(train[0]))]
+    for epoch in range(n_epoch):
+        sum_error = 0.0
+        for row in train:
+            prediction = predict(row, weights)
+            error = row[-1] - prediction
+            sum_error += error**2
+            weights[0] = weights[0] + l_rate * error
+            for i in range(len(row)-1):
+                weights[i + 1] = weights[i + 1] + l_rate * error * row[i]
+        print('>epoch=%d, lrate=%.3f, error=%.3f' % (epoch, l_rate, sum_error))
+    return weights
 
 
 # Calculate weights
@@ -54,34 +54,33 @@ weights = train_weights(dataset, l_rate, n_epoch)
 print(weights)
 
 
-#%%
+# %%
 x = np.matrix(np.arange(12).reshape((3, 4)))
 x
-#matrix([[0,  1,  2,  3],
- #       [4,  5,  6,  7],
-  #      [8,  9, 10, 11]])
+# matrix([[0,  1,  2,  3],
+#       [4,  5,  6,  7],
+#      [8,  9, 10, 11]])
 y = x[0].tolist()
 list(y[0])
 #[[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11]]
 
 
-#%%
-x = [0,-2,0]
-w = [1,1,1]
+# %%
+x = [0, -2, 0]
+w = [1, 1, 1]
 
 y = np.dot(x, w)
 print(y)
 
 
-
-#%%
+# %%
 weight = np.zeros(10)  # init weights
 print(weight.shape)
 weight = weight.T
 print(weight.shape)
 
 print(weight)
-print(weight.reshape((10,1)))
+print(weight.reshape((10, 1)))
 
 
-#%%
+# %%
